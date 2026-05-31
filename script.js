@@ -55,4 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.add('active');
         }, 100);
     }
+
+    // --- 3D Hover Animations (Vanilla Tilt) ---
+    // Inizializza l'effetto 3D sulle card dei progetti
+    VanillaTilt.init(document.querySelectorAll(".project-card"), {
+        max: 8,             // Inclinazione massima
+        speed: 400,         // Velocità dell'effetto
+        glare: true,        // Effetto riflesso luce
+        "max-glare": 0.2,   // Opacità massima del riflesso
+        scale: 1.02,        // Zoom leggero al passaggio del mouse
+        perspective: 1000
+    });
+
+    // Inizializza l'effetto 3D sulla foto profilo
+    VanillaTilt.init(document.querySelector(".profile-img-wrapper"), {
+        max: 15,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.4,
+        scale: 1.05
+    });
 });

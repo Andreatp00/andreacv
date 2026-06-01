@@ -1,0 +1,640 @@
+% !TEX program = xelatex
+% ============================================================
+%  CV MODERNO — Andrea Carini (2 pagine)
+%  Compilare con XeLaTeX
+% ============================================================
+\documentclass[a4paper]{article}
+
+% ── Packages ──────────────────────────────────────────────────
+\usepackage[quiet]{fontspec}
+\usepackage[italian]{babel}
+\usepackage[
+  left=0pt, right=0pt, top=0pt, bottom=0pt
+]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, backgrounds, fit, shapes.geometric}
+\usepackage{fontawesome5}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+
+% ── Colori ────────────────────────────────────────────────────
+\definecolor{sidebar}{HTML}{1B2838}
+\definecolor{accent}{HTML}{00B4D8}
+\definecolor{accentdark}{HTML}{0096B7}
+\definecolor{accentlight}{HTML}{67E8F9}
+\definecolor{mainbg}{HTML}{FFFFFF}
+\definecolor{textlight}{HTML}{CBD5E1}
+\definecolor{textmuted}{HTML}{94A3B8}
+\definecolor{headcolor}{HTML}{0F172A}
+\definecolor{bodycolor}{HTML}{334155}
+\definecolor{ruleline}{HTML}{E2E8F0}
+\definecolor{skillbg}{HTML}{1E293B}
+\definecolor{tagbg}{HTML}{F0F9FF}
+\definecolor{tagborder}{HTML}{BAE6FD}
+\definecolor{refbg}{HTML}{F8FAFC}
+\definecolor{refborder}{HTML}{CBD5E1}
+\definecolor{claudebg}{HTML}{D4A574}
+
+% ── Font ──────────────────────────────────────────────────────
+\setmainfont{Segoe UI}[
+  BoldFont   = {Segoe UI Bold},
+  ItalicFont = {Segoe UI Italic},
+]
+\setsansfont{Segoe UI}
+
+% ── Misure layout ─────────────────────────────────────────────
+\newlength{\sidebarwidth}
+\setlength{\sidebarwidth}{7.2cm}
+\newlength{\mainwidth}
+\setlength{\mainwidth}{\dimexpr\paperwidth-\sidebarwidth\relax}
+\newlength{\photosize}
+\setlength{\photosize}{3.8cm}
+\newlength{\photooverlap}
+\setlength{\photooverlap}{1.0cm}
+
+% ── Helper: barra skill ──────────────────────────────────────
+\newcommand{\skillbar}[2]{%
+  \par\vspace{2.5pt}%
+  {\footnotesize\color{textlight}#1}\par\vspace{1.5pt}%
+  \begin{tikzpicture}[y=0.16cm, x=1cm]
+    \fill[skillbg, rounded corners=2pt] (0,0) rectangle (4.6,1);
+    \fill[accent,  rounded corners=2pt] (0,0) rectangle ({4.6*#2},1);
+  \end{tikzpicture}\par\vspace{0.5pt}%
+}
+
+% ── Helper: sezione sidebar ──────────────────────────────────
+\newcommand{\sidesection}[2]{%
+  \par\vspace{8pt}%
+  {\normalsize\color{accent}#1}\;%
+  {\normalsize\bfseries\color{white}\MakeUppercase{#2}}%
+  \par\vspace{1pt}%
+  {\color{accent}\rule{2.2cm}{1.2pt}}%
+  \par\vspace{4pt}%
+}
+
+% ── Helper: sezione main ─────────────────────────────────────
+\newcommand{\mainsection}[2]{%
+  \par\vspace{10pt}%
+  {\Large\color{accent}#1}\;%
+  {\Large\bfseries\color{headcolor}\MakeUppercase{#2}}%
+  \par\vspace{2pt}%
+  {\color{accent}\rule{3cm}{1.5pt}}%
+  \par\vspace{5pt}%
+}
+
+% ── Helper: esperienza ────────────────────────────────────────
+\newcommand{\experience}[4]{%
+  \par\noindent
+  {\bfseries\color{headcolor}#1}%
+  \hfill{\footnotesize\color{accent}\faCalendar*\; #3}\\[1.5pt]
+  {\small\itshape\color{bodycolor}#2}%
+  \par\vspace{2pt}%
+  #4%
+  \par\vspace{3pt}%
+}
+
+% ── Helper: tag competenza ────────────────────────────────────
+\newcommand{\comptag}[1]{%
+  \tikz[baseline=(t.base)]{%
+    \node[fill=tagbg, draw=tagborder, rounded corners=3pt,
+          inner xsep=5pt, inner ysep=2pt, font=\footnotesize\color{headcolor}] (t) {#1};
+  }\,%
+}
+
+% ── Helper: Claude Code logo (mini) ──────────────────────────
+\newcommand{\claudelogo}{%
+  \begin{tikzpicture}[scale=0.28, baseline=-1pt]
+    % Outer circle
+    \fill[claudebg] (0,0) circle (1);
+    % Inner star/sparkle shape
+    \fill[white] (0,0.55) -- (0.12,0.12) -- (0.55,0) -- (0.12,-0.12) -- (0,-0.55) -- (-0.12,-0.12) -- (-0.55,0) -- (-0.12,0.12) -- cycle;
+  \end{tikzpicture}%
+}
+
+% ── No header/footer ─────────────────────────────────────────
+\pagestyle{empty}
+
+% ══════════════════════════════════════════════════════════════
+%                        PAGINA 1
+% ══════════════════════════════════════════════════════════════
+\begin{document}
+\noindent
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (TL) at (current page.north west);
+  \coordinate (BR) at (current page.south east);
+  \coordinate (sidebarBR) at ([xshift=\sidebarwidth]current page.south west);
+
+  % ── sfondo sidebar ─────────────────────────────────────────
+  \fill[sidebar] (TL) rectangle (sidebarBR);
+
+  % ── linea accent in alto ────────────────────────────────────
+  \fill[accent] (TL) rectangle ([yshift=-3pt, xshift=\paperwidth]TL);
+
+  % ── FOTO circolare ─────────────────────────────────────────
+  \node[
+    circle, minimum size=\photosize,
+    path picture={
+      \node at (path picture bounding box.center){
+        \includegraphics[width=\photosize]{foto andrea.png}
+      };
+    },
+    draw=accent, line width=2.5pt,
+  ] (photo) at ([xshift=\sidebarwidth-\photooverlap, yshift=-2.4cm]TL) {};
+
+  % ── QR CODE (In alto a sinistra) ───────────────────────────
+  \node[
+    anchor=center,
+    text width=3cm,
+    align=center
+  ] at ([xshift=2.2cm, yshift=-2.4cm]TL) {
+    \includegraphics[width=2.2cm, keepaspectratio]{scan sito.png}\\[2pt]
+    {\fontsize{6.5}{7.5}\selectfont\itshape\color{accent}CV Interattivo}
+  };
+
+  % ── CONTENUTO SIDEBAR (pagina 1) ───────────────────────────
+  \node[
+    anchor=north west,
+    text width={\sidebarwidth-1.6cm},
+  ] at ([xshift=0.8cm, yshift=-4.8cm]TL)
+  {%
+    \sidesection{\faAddressCard}{Contatti}
+
+    {\footnotesize\color{textlight}%
+      \faEnvelope[regular]\;\;%
+      \href{mailto:cariniAndrea00@gmail.com}{cariniAndrea00@gmail.com}%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faPhone*\;\;+39\;339\;102\;9782%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faMapMarker*\;\;Trapani\;(TP),\;Italia%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faBirthdayCake\;\;17\;agosto\;2000%
+    }\par\vspace{3pt}
+
+    \sidesection{\faGlobe}{Social}
+
+    {\footnotesize\color{textlight}%
+      \faLinkedin\;\;%
+      \href{https://www.linkedin.com/in/andrea-carini}{Andrea Carini}%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faInstagram\;\;%
+      \href{https://instagram.com/andreacarini\_}{@andreacarini\_}%
+    }\par\vspace{3pt}
+
+    \sidesection{\faChartBar}{Competenze}
+
+    \skillbar{ERP (SAP, Teamsystem, Zucchetti)}{0.90}
+    \skillbar{Contabilit\`a \& Prima Nota}{0.85}
+    \skillbar{Gestione Magazzino / WMS}{0.85}
+    \skillbar{E-Commerce (Shopify, WooCommerce)}{0.80}
+    \skillbar{WordPress \& Web Development}{0.80}
+    \skillbar{Web Marketing \& SEO}{0.75}
+    \skillbar{Brand Design \& Illustrator}{0.70}
+    \skillbar{CRM \& Vendite B2B/B2C}{0.80}
+    \skillbar{Office (Excel, Word, Outlook)}{0.85}
+    \skillbar{Canva \& Photoshop}{0.70}
+
+    \sidesection{\faLanguage}{Lingue}
+
+    \skillbar{Italiano --- Madrelingua}{1.0}
+    \skillbar{Inglese --- Livello B1}{0.45}
+
+    \sidesection{\faUsers}{Soft Skills}
+
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Sviluppo Aziendale%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Problem Solving%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Lavoro in Team%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Gestione Fornitori%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Precisione e Affidabilit\`a%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Attenzione ai Dettagli%
+    }\par\vspace{6pt}
+
+    {\footnotesize\color{textmuted}%
+      \faCar\;\;Automunito%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textmuted}%
+      \faCheckCircle\;\;Disponibilit\`a immediata%
+    }\par
+
+    \vspace{8pt}
+
+    \sidesection{\faTools}{Strumenti}
+
+    {\footnotesize\color{textlight}%
+      \claudelogo\;\;Claude Code (AI Dev)%
+    }\par\vspace{3pt}
+    {\footnotesize\color{textlight}%
+      \faCode\;\;Programmazione Agevolata%
+    }\par\vspace{3pt}
+    {\footnotesize\color{textlight}%
+      \faPen*\;\;Adobe Illustrator%
+    }\par\vspace{3pt}
+    {\footnotesize\color{textlight}%
+      \faWordpress\;\;WordPress / CMS%
+    }\par
+  };
+
+  % ── CONTENUTO PRINCIPALE (pagina 1) ────────────────────────
+  \node[
+    anchor=north west,
+    text width={\mainwidth-2cm},
+  ] at ([xshift=\sidebarwidth+1cm, yshift=-0.6cm]TL)
+  {%
+    \vspace{4pt}
+    {\fontsize{28}{32}\selectfont\bfseries\color{headcolor}Andrea\;}%
+    {\fontsize{28}{32}\selectfont\color{accent}Carini}\\[4pt]
+    {\normalsize\color{bodycolor}Sviluppo Aziendale\;\textbar\;Contabilit\`a\;\textbar\;E-Commerce\;\textbar\;Brand Design}%
+    \par\vspace{2pt}
+    {\color{accent}\rule{\linewidth}{1.5pt}}
+
+    % ── PROFILO ───────────────────────────────────────────────
+    \mainsection{\faUser}{Profilo}
+
+    {\color{bodycolor}\footnotesize
+      Professionista con oltre \textbf{6 anni di esperienza} nello sviluppo aziendale
+      a 360\textdegree: dall'ideazione alla creazione e sviluppo di brand, e-commerce
+      e strategie digitali. Competenze trasversali in contabilit\`a, logistica,
+      web marketing, SEO e social media management. Capacit\`a di gestione
+      fornitori e relazioni B2B/B2C. Abilit\`a nel brand design a livello
+      medio-professionale con Adobe Illustrator, Canva e Photoshop.
+      Utilizzo di sistemi di programmazione agevolata e AI (Claude Code)
+      per lo sviluppo di soluzioni digitali innovative.
+    }
+
+    % ── ESPERIENZA ────────────────────────────────────────────
+    \mainsection{\faBriefcase}{Esperienza}
+
+    \experience
+      {Addetto Amministrativo, Contabilit\`a, Logistica e Sviluppo Aziendale}
+      {Punto Cialde S.r.l.\;---\;Trapani, Sicilia\;\textbar\;A tempo pieno}
+      {Set 2019 -- Set 2023}
+      {%
+        \begin{itemize}[
+          leftmargin=1.2em, itemsep=1pt, parsep=0pt, topsep=1pt,
+          label={\color{accent}\faAngleRight}, font=\footnotesize
+        ]
+          \item Vendita B2B e B2C, gestione completa del punto vendita
+          \item Gestione contabile e amministrativa: fatture, prima nota, magazzino
+          \item Creazione e gestione e-commerce con WooCommerce e WordPress
+          \item Web marketing, SEO e social media management
+          \item Creazione brand \textbf{Il Ghiaccio Gourmet} e realizzazione del sito Punto Cialde
+          \item Gestione rapporti con fornitori e coordinamento logistico
+        \end{itemize}%
+        \vspace{2pt}%
+        {\footnotesize\color{bodycolor}%
+          \faGlobe\;\;\href{https://www.puntocialde.com}{\textbf{www.puntocialde.com}}\;---\;sito web sviluppato e seguito con dati accertati%
+        }\par\vspace{1pt}%
+        {\footnotesize\color{textmuted}%
+          \faPhoneSquare*\;\;Ref:\;0923\;26911\;\textbar\;\;335\;768\;1015\;\;\textbar\;\;\faEnvelope[regular]\;\;\href{mailto:puntocialde@gmail.com}{puntocialde@gmail.com}%
+        }%
+      }
+
+    \vspace{4pt}
+
+    \experience
+      {Libero Professionista -- Vendita all'Ingrosso e Online}
+      {Autonomo\;---\;Trapani, Sicilia}
+      {Gen 2018 -- Feb 2021}
+      {%
+        \begin{itemize}[
+          leftmargin=1.2em, itemsep=1pt, parsep=0pt, topsep=1pt,
+          label={\color{accent}\faAngleRight}, font=\footnotesize
+        ]
+          \item Vendita B2B e B2C di prodotti ecologici e articoli da banco farmaceutico
+          \item Gestione contabile e amministrativa: fatture, prima nota, magazzino
+          \item Creazione e gestione e-commerce con WooCommerce e WordPress
+          \item Web marketing, SEO e social media management
+          \item Ideazione, design e sviluppo brand aziendali da zero
+        \end{itemize}%
+      }
+
+    % ── ISTRUZIONE ────────────────────────────────────────────
+    \mainsection{\faGraduationCap}{Istruzione}
+
+    \experience
+      {Diploma di Ragioniere}
+      {Istituto Tecnico Economico\;---\;Trapani}
+      {2014 -- 2018}
+      {%
+        \begin{itemize}[
+          leftmargin=1.2em, itemsep=1pt, parsep=0pt, topsep=1pt,
+          label={\color{accent}\faAngleRight}, font=\footnotesize
+        ]
+          \item Indirizzo Amministrazione, Finanza e Marketing
+          \item Basi di contabilit\`a, diritto ed economia aziendale
+        \end{itemize}%
+      }
+
+    % ── COMPETENZE TECNICHE (tag) ─────────────────────────────
+    \mainsection{\faLaptopCode}{Competenze Tecniche}
+
+    \comptag{SAP Business One}
+    \comptag{Teamsystem}
+    \comptag{Zucchetti}
+    \comptag{WMS}
+    \comptag{CRM}
+    \comptag{Shopify}
+    \comptag{WooCommerce}
+    \comptag{WordPress}
+    \comptag{SEO}
+    \comptag{Illustrator}
+    \comptag{Photoshop}
+    \comptag{Canva}
+    \comptag{Excel}
+    \comptag{Claude Code}
+    \comptag{Brand Design}
+    \comptag{Social Media}
+  };
+
+\end{tikzpicture}
+
+% ══════════════════════════════════════════════════════════════
+%                        PAGINA 2
+% ══════════════════════════════════════════════════════════════
+\newpage
+\noindent
+\begin{tikzpicture}[remember picture, overlay]
+  \coordinate (TL) at (current page.north west);
+  \coordinate (sidebarBR) at ([xshift=\sidebarwidth]current page.south west);
+
+  % ── sfondo sidebar (pagina 2) ───────────────────────────────
+  \fill[sidebar] (TL) rectangle (sidebarBR);
+
+  % ── linea accent in alto ────────────────────────────────────
+  \fill[accent] (TL) rectangle ([yshift=-3pt, xshift=\paperwidth]TL);
+
+  % ── SIDEBAR PAGINA 2 ───────────────────────────────────────
+  \node[
+    anchor=north west,
+    text width={\sidebarwidth-1.6cm},
+  ] at ([xshift=0.8cm, yshift=-1.0cm]TL)
+  {%
+    % ── Titolo sidebar ────────────────────────────────────────
+    {\Large\bfseries\color{white}Andrea}\\[2pt]
+    {\Large\color{accent}Carini}\\[6pt]
+    {\color{accent}\rule{2.5cm}{1.2pt}}
+
+    \vspace{12pt}
+
+    \sidesection{\faRocket}{Sviluppo Aziendale}
+
+    {\footnotesize\color{textlight}%
+      Mi occupo di \textbf{sviluppo aziendale} sotto tutti gli aspetti:%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Ideazione concept e brand%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Design e identit\`a visiva%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Creazione siti web e e-commerce%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Strategie di marketing digitale%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Gestione fornitori%
+    }\par\vspace{2.5pt}
+    {\footnotesize\color{textlight}%
+      \faAngleRight\;\;Crescita e sviluppo del business%
+    }\par
+
+    \vspace{14pt}
+
+    \sidesection{\faPhone*}{Referenze}
+
+    {\footnotesize\bfseries\color{accent}Punto Cialde S.r.l.}\par\vspace{2pt}
+    {\footnotesize\color{textlight}%
+      \faGlobe\;\;\href{https://www.puntocialde.com}{www.puntocialde.com}%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textlight}%
+      \faPhone*\;\;0923\;26911%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textlight}%
+      \faPhone*\;\;335\;768\;1015%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textlight}%
+      \faEnvelope[regular]\;\;\href{mailto:puntocialde@gmail.com}{puntocialde@gmail.com}%
+    }\par
+
+    \vspace{14pt}
+
+    \sidesection{\faTools}{Metodologia}
+
+    {\footnotesize\color{textlight}%
+      \claudelogo\;\;\textbf{Claude Code}%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textmuted}%
+      Programmazione agevolata con AI%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faCode\;\;\textbf{Low-Code / No-Code}%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textmuted}%
+      Sviluppo rapido di soluzioni digitali%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faPen*\;\;\textbf{Adobe Illustrator}%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textmuted}%
+      Brand design professionale%
+    }\par\vspace{4pt}
+    {\footnotesize\color{textlight}%
+      \faWordpress\;\;\textbf{WordPress / WooCommerce}%
+    }\par\vspace{2pt}
+    {\footnotesize\color{textmuted}%
+      Siti web ed e-commerce completi%
+    }\par
+
+    \vspace{16pt}
+    \begin{center}
+      {\footnotesize\color{textmuted}Aggiornato al \today}
+    \end{center}
+  };
+
+  % ── CONTENUTO PRINCIPALE PAGINA 2 ──────────────────────────
+  \node[
+    anchor=north west,
+    text width={\mainwidth-2cm},
+  ] at ([xshift=\sidebarwidth+1cm, yshift=-0.6cm]TL)
+  {%
+    \vspace{4pt}
+    {\color{accent}\rule{\linewidth}{1.5pt}}
+
+    % ── PROGETTI REALIZZATI ───────────────────────────────────
+    \mainsection{\faProjectDiagram}{Progetti Realizzati}
+
+    {\color{bodycolor}\footnotesize
+      Progetti ideati, progettati e sviluppati personalmente --- dall'identit\`a visiva
+      alla realizzazione del sito web e dell'e-commerce, con gestione completa del
+      marketing digitale e delle vendite online.
+    }
+
+    \vspace{8pt}
+
+    % ── Progetto 1: Punto Cialde ──────────────────────────────
+    \noindent
+    \begin{minipage}[t]{0.22\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \node[
+          rounded corners=4pt, inner sep=0pt,
+          draw=ruleline, line width=0.5pt,
+        ]{\includegraphics[width=2.1cm, height=2.1cm, keepaspectratio]{punotcialde .png}};
+      \end{tikzpicture}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.74\linewidth}
+      {\bfseries\color{headcolor}Punto Cialde}\;\;%
+      {\footnotesize\color{accent}\faGlobe\;\href{https://www.puntocialde.com}{www.puntocialde.com}}\\[2pt]
+      {\footnotesize\color{bodycolor}%
+        Sito web e-commerce sviluppato e seguito con dati accertati.
+        Gestione completa del progetto digitale: dalla creazione del sito alla
+        strategia SEO, social media e vendite online.
+        Referenti aziendali disponibili per verifica.%
+      }
+    \end{minipage}
+
+    \vspace{10pt}
+
+    % ── Progetto 2: Il Ghiaccio Gourmet ───────────────────────
+    \noindent
+    \begin{minipage}[t]{0.22\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \node[
+          rounded corners=4pt, inner sep=0pt,
+          draw=ruleline, line width=0.5pt,
+        ]{\includegraphics[width=2.1cm, height=2.1cm, keepaspectratio]{ghiaccio goruemt.jpg}};
+      \end{tikzpicture}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.74\linewidth}
+      {\bfseries\color{headcolor}Il Ghiaccio Gourmet}\;\;%
+      {\footnotesize\color{accent}\faFacebook\;\href{https://www.facebook.com/Ilghiacciogourmet/}{Facebook Page}}\\[2pt]
+      {\footnotesize\color{bodycolor}%
+        Brand ideato e creato da zero: naming, logo design con Adobe Illustrator,
+        identit\`a visiva completa e strategia di lancio.
+        Progetto di brand design a livello medio-professionale.%
+      }
+    \end{minipage}
+
+    \vspace{10pt}
+
+    % ── Progetto 3: Ingrozone ─────────────────────────────────
+    \noindent
+    \begin{minipage}[t]{0.22\linewidth}
+      \centering
+      \begin{tikzpicture}
+        \node[
+          rounded corners=4pt, inner sep=0pt,
+          draw=ruleline, line width=0.5pt,
+        ]{\includegraphics[width=2.1cm, height=2.1cm, keepaspectratio]{ingorzone.jpg}};
+      \end{tikzpicture}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.74\linewidth}
+      {\bfseries\color{headcolor}Ingrozone Ingrosso}\\[2pt]
+      {\footnotesize\color{bodycolor}%
+        Piattaforma e-commerce per vendita all'ingrosso.
+        Sviluppo completo del brand, del sito web con WooCommerce e WordPress,
+        e gestione delle strategie di vendita B2B e B2C.%
+      }
+    \end{minipage}
+
+    \vspace{14pt}
+
+    % ── SVILUPPO AZIENDALE ────────────────────────────────────
+    \mainsection{\faRocket}{Approccio allo Sviluppo}
+
+    {\color{bodycolor}\footnotesize
+      Il mio approccio allo sviluppo aziendale copre l'intero ciclo di vita
+      del progetto:
+    }
+
+    \vspace{4pt}
+
+    \noindent
+    \begin{tikzpicture}[
+      node distance=0.3cm and 0.2cm,
+      stage/.style={
+        rounded corners=5pt, minimum width=2.2cm, minimum height=0.8cm,
+        font=\footnotesize\bfseries, text=white, align=center,
+        inner xsep=4pt, inner ysep=3pt,
+      }
+    ]
+      \node[stage, fill=accent]                     (s1) {\faLightbulb\\[-1pt]Ideazione};
+      \node[stage, fill=accentdark, right=of s1]    (s2) {\faPen*\\[-1pt]Design};
+      \node[stage, fill=sidebar, right=of s2]       (s3) {\faCode\\[-1pt]Sviluppo};
+      \node[stage, fill=headcolor, right=of s3]     (s4) {\faRocket\\[-1pt]Lancio};
+
+      \draw[->, thick, accent] (s1) -- (s2);
+      \draw[->, thick, accent] (s2) -- (s3);
+      \draw[->, thick, accent] (s3) -- (s4);
+    \end{tikzpicture}
+
+    \vspace{8pt}
+
+    {\color{bodycolor}\footnotesize
+      Dall'\textbf{ideazione del concept} al \textbf{design dell'identit\`a visiva}
+      (logo, branding, materiale grafico con Illustrator), passando per lo
+      \textbf{sviluppo tecnico} (siti web, e-commerce, SEO) fino al
+      \textbf{lancio e gestione} del business, inclusa la gestione dei fornitori
+      e delle relazioni commerciali.
+    }
+
+    \vspace{10pt}
+
+    % ── PROGETTO RECENTE ──────────────────────────────────────
+    \mainsection{\faStar}{Progetto Recente}
+
+    \noindent
+    \begin{tikzpicture}
+      \node[
+        rounded corners=6pt, fill=tagbg, draw=tagborder,
+        inner xsep=10pt, inner ysep=8pt,
+        text width={\mainwidth-3cm},
+      ]{%
+        {\bfseries\color{headcolor}Sviluppo con AI e Programmazione Agevolata}\\[4pt]
+        {\footnotesize\color{bodycolor}%
+          Utilizzo attivo di \claudelogo\;\textbf{Claude Code} e strumenti di
+          programmazione assistita da AI per lo sviluppo rapido di soluzioni
+          digitali: siti web, automazioni e strumenti aziendali personalizzati.
+          Approccio innovativo che combina competenze tradizionali con
+          tecnologie emergenti per massimizzare l'efficienza.%
+        }%
+      };
+    \end{tikzpicture}
+
+    \vspace{12pt}
+
+    % ── AUTORIZZAZIONE DATI ───────────────────────────────────
+    \begin{center}
+      {\footnotesize\color{textmuted}%
+        Autorizzo il trattamento dei dati personali ai sensi del D.Lgs. 196/2003
+        e del GDPR (UE 2016/679).%
+      }
+    \end{center}
+  };
+
+\end{tikzpicture}
+\end{document}

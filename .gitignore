@@ -1,0 +1,29 @@
+# LaTeX
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Other
+node_modules/
+dist/

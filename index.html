@@ -1,372 +1,317 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CV Online di Andrea Carini - Sviluppo Aziendale, Contabilità, E-Commerce, Brand Design">
-    <title>Andrea Carini | Sviluppo Aziendale & E-Commerce</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons (FontAwesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=2">
+    <title>Andrea Carini - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0908;
+            --text-color: #e8e6e3;
+            --accent-color: #c8a06e;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        
+        .card {
+            width: 300px;
+            height: 400px;
+            border-radius: 20px;
+            background: url('./foto-profilo.jpg') no-repeat center center/cover;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .projects {
+            padding: 50px 0;
+        }
+        
+        .project-card {
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 10px;
+            background-color: #333;
+            transform: translateX(80px);
+            opacity: 0;
+        }
+        
+        .skills {
+            padding: 50px 0;
+        }
+        
+        .skill-bar {
+            height: 30px;
+            background-color: #333;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0;
+        }
+        
+        .animation {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+        }
+        
+        .floating-card {
+            width: 200px;
+            height: 300px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: absolute;
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Ambient Background Effects -->
-    <div class="ambient-bg">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-    </div>
-
-    <div class="container">
+    <section class="hero">
+        <div class="card" id="profile-card">
+            <h1 class="name" id="name">Andrea Carini</h1>
+            <p class="subtitle" id="subtitle">Sviluppo Aziendale | E-Commerce | Brand Design</p>
+        </div>
+    </section>
+    
+    <section class="projects">
+        <div class="project-card" id="project1">Punto Cialde</div>
+        <div class="project-card" id="project2">Il Ghiaccio Gourmet</div>
+        <div class="project-card" id="project3">Ingrozone</div>
+    </section>
+    
+    <section class="skills">
+        <div class="skill">
+            <h3>ERP/SAP</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="erp-progress"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>E-Commerce</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="ecommerce-progress"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>WordPress</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="wordpress-progress"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>SEO</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="seo-progress"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>Brand Design</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="brand-design-progress"></div>
+            </div>
+        </div>
+        <div class="skill">
+            <h3>Claude Code</h3>
+            <div class="skill-bar">
+                <div class="skill-progress" id="claude-code-progress"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="animation">
+        <div class="floating-card" id="card1"></div>
+        <div class="floating-card" id="card2"></div>
+        <div class="floating-card" id="card3"></div>
+    </section>
+    
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
         
-        <!-- SIDEBAR -->
-        <aside class="sidebar reveal-left">
-            <div class="profile-header">
-                <div class="profile-img-wrapper flutter-3d">
-                    <img src="assets/foto andrea.png" alt="Andrea Carini" class="profile-img">
-                </div>
-                <h1 class="name">Andrea <span>Carini</span></h1>
-                <p class="titles">Sviluppo Aziendale | Contabilità | E-Commerce</p>
-            </div>
-
-            <div class="sidebar-section">
-                <h2 class="section-title"><i class="fa-solid fa-address-card"></i> Contatti</h2>
-                <ul class="contact-list">
-                    <li>
-                        <a href="mailto:cariniAndrea00@gmail.com" class="contact-link">
-                            <i class="fa-regular fa-envelope"></i> cariniAndrea00@gmail.com
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:+393391029782" class="contact-link">
-                            <i class="fa-solid fa-phone"></i> +39 339 102 9782
-                        </a>
-                    </li>
-                    <li>
-                        <div class="contact-link static">
-                            <i class="fa-solid fa-location-dot"></i> Trapani (TP), Italia
-                        </div>
-                    </li>
-                    <li>
-                        <div class="contact-link static">
-                            <i class="fa-solid fa-cake-candles"></i> 17 agosto 2000
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-section">
-                <h2 class="section-title"><i class="fa-solid fa-globe"></i> Social</h2>
-                <ul class="contact-list">
-                    <li>
-                        <a href="https://www.linkedin.com/in/andrea-carini" target="_blank" class="contact-link">
-                            <i class="fa-brands fa-linkedin"></i> Andrea Carini
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://instagram.com/andreacarini_" target="_blank" class="contact-link">
-                            <i class="fa-brands fa-instagram"></i> @andreacarini_
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-section">
-                <h2 class="section-title"><i class="fa-solid fa-chart-bar"></i> Competenze</h2>
-                <div class="skills-container">
-                    <div class="skill">
-                        <div class="skill-name">ERP (SAP, Teamsystem, Zucchetti)</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Contabilità & Prima Nota</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Gestione Magazzino / WMS</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">E-Commerce (Shopify, WooCommerce)</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="80%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">WordPress & Web Development</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="80%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Web Marketing & SEO</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="75%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Brand Design & Illustrator</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="70%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">CRM & Vendite B2B/B2C</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="80%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Office (Excel, Word, Outlook)</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Canva & Photoshop</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="70%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h2 class="section-title"><i class="fa-solid fa-language"></i> Lingue</h2>
-                <div class="skills-container">
-                    <div class="skill">
-                        <div class="skill-name">Italiano — Madrelingua</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="100%"></div></div>
-                    </div>
-                    <div class="skill">
-                        <div class="skill-name">Inglese — Livello B1</div>
-                        <div class="skill-bar"><div class="skill-fill" data-width="45%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
-                <h2 class="section-title"><i class="fa-solid fa-users"></i> Soft Skills</h2>
-                <ul class="soft-skills-list">
-                    <li><i class="fa-solid fa-angle-right"></i> Sviluppo Aziendale</li>
-                    <li><i class="fa-solid fa-angle-right"></i> Problem Solving</li>
-                    <li><i class="fa-solid fa-angle-right"></i> Lavoro in Team</li>
-                    <li><i class="fa-solid fa-angle-right"></i> Gestione Fornitori</li>
-                    <li><i class="fa-solid fa-angle-right"></i> Precisione e Affidabilità</li>
-                    <li><i class="fa-solid fa-angle-right"></i> Attenzione ai Dettagli</li>
-                </ul>
-            </div>
-            
-            <div class="sidebar-footer">
-                <div><i class="fa-solid fa-car"></i> Automunito</div>
-                <div><i class="fa-solid fa-circle-check"></i> Disponibilità immediata</div>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            
-            <!-- PROFILO -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-user"></i> Profilo</h2>
-                <div class="glass-card">
-                    <p>
-                        Professionista con oltre <strong>6 anni di esperienza</strong> nello sviluppo aziendale a 360°: dall'ideazione alla creazione e sviluppo di brand, e-commerce e strategie digitali. 
-                        Competenze trasversali in contabilità, logistica, web marketing, SEO e social media management. 
-                        Capacità di gestione fornitori e relazioni B2B/B2C. Abilità nel brand design a livello medio-professionale con Adobe Illustrator, Canva e Photoshop. 
-                        Utilizzo di sistemi di programmazione agevolata e AI (Claude Code) per lo sviluppo di soluzioni digitali innovative.
-                    </p>
-                </div>
-            </section>
-
-            <!-- ESPERIENZA -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-briefcase"></i> Esperienza</h2>
-                
-                <div class="timeline">
-                    <div class="timeline-item glass-card">
-                        <div class="timeline-date"><i class="fa-regular fa-calendar"></i> Set 2019 – Set 2023</div>
-                        <h3 class="timeline-title">Addetto Amministrativo, Contabilità, Logistica e Sviluppo Aziendale</h3>
-                        <div class="timeline-company">Punto Cialde S.r.l. — Trapani, Sicilia | A tempo pieno</div>
-                        <ul class="timeline-details">
-                            <li>Vendita B2B e B2C, gestione completa del punto vendita</li>
-                            <li>Gestione contabile e amministrativa: fatture, prima nota, magazzino</li>
-                            <li>Creazione e gestione e-commerce con WooCommerce e WordPress</li>
-                            <li>Web marketing, SEO e social media management</li>
-                            <li>Creazione brand <strong>Il Ghiaccio Gourmet</strong> e realizzazione del sito Punto Cialde</li>
-                            <li>Gestione rapporti con fornitori e coordinamento logistico</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="timeline-item glass-card">
-                        <div class="timeline-date"><i class="fa-regular fa-calendar"></i> Gen 2018 – Feb 2021</div>
-                        <h3 class="timeline-title">Libero Professionista – Vendita all'Ingrosso e Online</h3>
-                        <div class="timeline-company">Autonomo — Trapani, Sicilia</div>
-                        <ul class="timeline-details">
-                            <li>Vendita B2B e B2C di prodotti ecologici e articoli da banco farmaceutico</li>
-                            <li>Gestione contabile e amministrativa: fatture, prima nota, magazzino</li>
-                            <li>Creazione e gestione e-commerce con WooCommerce e WordPress</li>
-                            <li>Web marketing, SEO e social media management</li>
-                            <li>Ideazione, design e sviluppo brand aziendali da zero</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- APPROCCIO ALLO SVILUPPO -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-rocket"></i> Approccio allo Sviluppo</h2>
-                <div class="glass-card">
-                    <p>Il mio approccio allo sviluppo aziendale copre l'intero ciclo di vita del progetto:</p>
-                    
-                    <div class="process-flow">
-                        <div class="process-step">
-                            <div class="process-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                            <div class="process-text">Ideazione</div>
-                        </div>
-                        <div class="process-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                        <div class="process-step">
-                            <div class="process-icon"><i class="fa-solid fa-pen-nib"></i></div>
-                            <div class="process-text">Design</div>
-                        </div>
-                        <div class="process-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                        <div class="process-step">
-                            <div class="process-icon"><i class="fa-solid fa-code"></i></div>
-                            <div class="process-text">Sviluppo</div>
-                        </div>
-                        <div class="process-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                        <div class="process-step highlight">
-                            <div class="process-icon"><i class="fa-solid fa-rocket"></i></div>
-                            <div class="process-text">Lancio</div>
-                        </div>
-                    </div>
-                    
-                    <p>
-                        Dall'<strong>ideazione del concept</strong> al <strong>design dell'identità visiva</strong> (logo, branding, materiale grafico con Illustrator), passando per lo <strong>sviluppo tecnico</strong> (siti web, e-commerce, SEO) fino al <strong>lancio e gestione del business</strong>, inclusa la gestione dei fornitori e delle relazioni commerciali.
-                    </p>
-                </div>
-            </section>
-
-            <!-- PROGETTI REALIZZATI -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-project-diagram"></i> Progetti Realizzati</h2>
-                <p class="section-subtitle">Progetti ideati, progettati e sviluppati personalmente — dall'identità visiva alla realizzazione del sito web e dell'e-commerce, con gestione completa del marketing digitale e delle vendite online.</p>
-                
-                <div class="projects-grid">
-                    <!-- Progetto 1 -->
-                    <div class="project-card glass-card flutter-3d">
-                        <div class="project-img-container">
-                            <img src="assets/punotcialde .png" alt="Punto Cialde" class="project-img">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Punto Cialde</h3>
-                            <a href="https://www.puntocialde.com" target="_blank" class="project-link"><i class="fa-solid fa-globe"></i> www.puntocialde.com</a>
-                            <p class="project-desc">
-                                Sito web e-commerce sviluppato e seguito con dati accertati. Gestione completa del progetto digitale: dalla creazione del sito alla strategia SEO, social media e vendite online. Referenti aziendali disponibili per verifica.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Progetto 2 -->
-                    <div class="project-card glass-card flutter-3d">
-                        <div class="project-img-container">
-                            <img src="assets/ghiaccio goruemt.jpg" alt="Il Ghiaccio Gourmet" class="project-img">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Il Ghiaccio Gourmet</h3>
-                            <a href="https://www.facebook.com/Ilghiacciogourmet/" target="_blank" class="project-link"><i class="fa-brands fa-facebook"></i> Facebook Page</a>
-                            <p class="project-desc">
-                                Brand ideato e creato da zero: naming, logo design con Adobe Illustrator, identità visiva completa e strategia di lancio. Progetto di brand design a livello medio-professionale.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Progetto 3 -->
-                    <div class="project-card glass-card flutter-3d">
-                        <div class="project-img-container">
-                            <img src="assets/ingorzone.jpg" alt="Ingrozone Ingrosso" class="project-img">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Ingrozone Ingrosso</h3>
-                            <p class="project-desc">
-                                Piattaforma e-commerce per vendita all'ingrosso. Sviluppo completo del brand, del sito web con WooCommerce e WordPress, e gestione delle strategie di vendita B2B e B2C.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PROGETTO RECENTE (CLAUDE CODE) -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-star"></i> Focus: Innovazione & AI</h2>
-                <div class="glass-card highlight-card">
-                    <h3 class="highlight-title">
-                        <div class="claude-logo-wrapper">
-                            <i class="fa-solid fa-microchip"></i>
-                        </div>
-                        Sviluppo con AI e Programmazione Agevolata
-                    </h3>
-                    <p>
-                        Utilizzo attivo di <strong>Claude Code</strong> e strumenti di programmazione assistita da AI per lo sviluppo rapido di soluzioni digitali: siti web, automazioni e strumenti aziendali personalizzati. Approccio innovativo che combina competenze tradizionali con tecnologie emergenti per massimizzare l'efficienza.
-                    </p>
-                </div>
-            </section>
-
-            <!-- COMPETENZE TECNICHE (TAGS) -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-laptop-code"></i> Tool & Tecnologie</h2>
-                <div class="tags-container">
-                    <span class="tag">SAP Business One</span>
-                    <span class="tag">Teamsystem</span>
-                    <span class="tag">Zucchetti</span>
-                    <span class="tag">WMS</span>
-                    <span class="tag">CRM</span>
-                    <span class="tag">Shopify</span>
-                    <span class="tag">WooCommerce</span>
-                    <span class="tag">WordPress</span>
-                    <span class="tag">SEO</span>
-                    <span class="tag">Illustrator</span>
-                    <span class="tag">Photoshop</span>
-                    <span class="tag">Canva</span>
-                    <span class="tag">Excel</span>
-                    <span class="tag highlight-tag">Claude Code</span>
-                    <span class="tag">Brand Design</span>
-                    <span class="tag">Social Media</span>
-                </div>
-            </section>
-
-            <!-- ISTRUZIONE -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-graduation-cap"></i> Istruzione</h2>
-                <div class="timeline">
-                    <div class="timeline-item glass-card">
-                        <div class="timeline-date"><i class="fa-regular fa-calendar"></i> 2014 – 2018</div>
-                        <h3 class="timeline-title">Diploma di Ragioniere</h3>
-                        <div class="timeline-company">Istituto Tecnico Economico — Trapani</div>
-                        <ul class="timeline-details">
-                            <li>Indirizzo Amministrazione, Finanza e Marketing</li>
-                            <li>Basi di contabilità, diritto ed economia aziendale</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- REFERENZE -->
-            <section class="reveal-up">
-                <h2 class="main-title"><i class="fa-solid fa-address-book"></i> Referenze</h2>
-                <div class="glass-card ref-card">
-                    <h3 class="ref-title">Punto Cialde S.r.l.</h3>
-                    <ul class="contact-list ref-list">
-                        <li><a href="https://www.puntocialde.com" target="_blank" class="contact-link"><i class="fa-solid fa-globe"></i> www.puntocialde.com</a></li>
-                        <li><a href="tel:092326911" class="contact-link"><i class="fa-solid fa-phone"></i> 0923 26911</a></li>
-                        <li><a href="tel:3357681015" class="contact-link"><i class="fa-solid fa-mobile-screen"></i> 335 768 1015</a></li>
-                        <li><a href="mailto:puntocialde@gmail.com" class="contact-link"><i class="fa-regular fa-envelope"></i> puntocialde@gmail.com</a></li>
-                    </ul>
-                </div>
-            </section>
-
-            <footer class="footer">
-                <p>Autorizzo il trattamento dei dati personali ai sensi del D.Lgs. 196/2003 e del GDPR (UE 2016/679).</p>
-                <p>Aggiornato a Maggio 2026</p>
-            </footer>
-
-        </main>
-    </div>
-
-    <script src="script.js?v=3"></script>
+        // Hero Section Animations
+        gsap.from("#profile-card", {
+            duration: 1,
+            rotationY: 90,
+            ease: "power3.out"
+        });
+        
+        gsap.from("#name", {
+            duration: 0.5,
+            opacity: 0,
+            y: 30,
+            stagger: 0.05,
+            delay: 0.3
+        });
+        
+        gsap.from("#subtitle", {
+            duration: 0.5,
+            opacity: 0,
+            y: 30,
+            delay: 0.8
+        });
+        
+        gsap.to("#profile-card", {
+            y: "+=8",
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+        
+        // Mousemove Tilt Effect
+        document.getElementById("profile-card").addEventListener("mousemove", (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            gsap.to("#profile-card", {
+                rotationY: xAxis,
+                rotationX: yAxis,
+                duration: 0.1
+            });
+        });
+        
+        // Projects Section Animations
+        gsap.from("#project1", {
+            scrollTrigger: {
+                trigger: "#project1",
+                start: "top 80%",
+                once: true
+            },
+            x: -80,
+            opacity: 0,
+            duration: 1
+        });
+        
+        gsap.from("#project2", {
+            scrollTrigger: {
+                trigger: "#project2",
+                start: "top 80%",
+                once: true
+            },
+            x: 80,
+            opacity: 0,
+            duration: 1
+        });
+        
+        gsap.from("#project3", {
+            scrollTrigger: {
+                trigger: "#project3",
+                start: "top 80%",
+                once: true
+            },
+            x: -80,
+            opacity: 0,
+            duration: 1
+        });
+        
+        // Skills Section Animations
+        gsap.to("#erp-progress", {
+            scrollTrigger: {
+                trigger: "#erp-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "85%",
+            duration: 1
+        });
+        
+        gsap.to("#ecommerce-progress", {
+            scrollTrigger: {
+                trigger: "#ecommerce-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "90%",
+            duration: 1
+        });
+        
+        gsap.to("#wordpress-progress", {
+            scrollTrigger: {
+                trigger: "#wordpress-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "85%",
+            duration: 1
+        });
+        
+        gsap.to("#seo-progress", {
+            scrollTrigger: {
+                trigger: "#seo-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "80%",
+            duration: 1
+        });
+        
+        gsap.to("#brand-design-progress", {
+            scrollTrigger: {
+                trigger: "#brand-design-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "75%",
+            duration: 1
+        });
+        
+        gsap.to("#claude-code-progress", {
+            scrollTrigger: {
+                trigger: "#claude-code-progress",
+                start: "top 80%",
+                once: true
+            },
+            width: "70%",
+            duration: 1
+        });
+        
+        // Cinematic 3D Product Animation
+        gsap.to(".floating-card", {
+            rotationY: 360,
+            duration: 8,
+            repeat: -1,
+            ease: "none"
+        });
+    </script>
 </body>
 </html>

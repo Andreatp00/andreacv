@@ -55,39 +55,4 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.add('active');
         }, 100);
     }
-
-    // --- 3D Flutter Scroll Animations ---
-    const flutterElements = document.querySelectorAll('.flutter-3d');
-    
-    // Add smooth transition to elements
-    flutterElements.forEach(el => {
-        el.style.transition = 'transform 0.15s cubic-bezier(0.1, 0.5, 0.1, 1)';
-    });
-
-    const applyFlutter3D = () => {
-        const windowCenter = window.innerHeight / 2;
-        
-        flutterElements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            // Ignore elements far out of viewport to save performance
-            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-            
-            const elCenter = rect.top + rect.height / 2;
-            // Calculate distance from center of viewport (-1 to 1)
-            let dist = (elCenter - windowCenter) / (window.innerHeight / 2);
-            
-            // Clamp dist between -1 and 1 just in case
-            dist = Math.max(-1, Math.min(1, dist));
-            
-            // Calculate tilt (max 18 degrees)
-            const tiltX = dist * 18;
-            
-            // Apply 3D transform: perspective + rotation + slight scale
-            el.style.transform = `perspective(1000px) rotateX(${tiltX}deg) scale(1.02)`;
-        });
-    };
-
-    // Apply on scroll and initial load
-    window.addEventListener('scroll', applyFlutter3D, { passive: true });
-    applyFlutter3D();
 });

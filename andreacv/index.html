@@ -9,199 +9,28 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons (FontAwesome) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Ambient Background Effects (Old) - Removed since we have Three.js now -->
-    
-    <!-- 3D HERO SECTION -->
-    <section id="hero-3d">
-        <canvas id="webgl-canvas"></canvas>
-        <div class="hero-overlay">
-            <h1 class="hero-name">Andrea Carini</h1>
-            <p class="hero-subtitle">Sviluppo Aziendale &middot; E-Commerce &middot; Brand Design</p>
-        </div>
-    </section>
-
-    <!-- Import Map for Three.js r160 -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
-
-    <!-- Three.js Logic -->
-    <script type="module">
-        import * as THREE from 'three';
-        import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-
-        // --- Config ---
-        const CONFIG = {
-            bgColor: '#0a0908',
-            goldColor: '#c8a06e',
-            lightGold: '#ffd580',
-            particlesCount: 400,
-            photoPath: 'assets/foto andrea.png'
-        };
-
-        // --- Scene Setup ---
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(CONFIG.bgColor);
-
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.z = 3;
-
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // --- Lighting ---
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(CONFIG.lightGold, 1.2);
-        dirLight.position.set(5, 5, 2);
-        scene.add(dirLight);
-
-        const pointLight = new THREE.PointLight(CONFIG.goldColor, 0.8, 10);
-        pointLight.position.set(0, 0, -1);
-        scene.add(pointLight);
-
-        // --- Card Implementation ---
-        const cardGroup = new THREE.Group();
-        scene.add(cardGroup);
-
-        // Card Geometry (3:4 ratio -> 1.5 x 2)
-        const cardGeom = new RoundedBoxGeometry(1.5, 2, 0.05, 4, 0.15);
-        
-        // Materials
-        const cardMat = new THREE.MeshStandardMaterial({
-            color: CONFIG.goldColor, 
-            roughness: 0.1,
-            metalness: 0.3
-        });
-
-        const textureLoader = new THREE.TextureLoader();
-        const photoTex = textureLoader.load(CONFIG.photoPath, (tex) => {
-            tex.colorSpace = THREE.SRGBColorSpace;
-        });
-
-        const frontMat = new THREE.MeshStandardMaterial({
-            map: photoTex,
-            roughness: 0.1,
-            metalness: 0.3
-        });
-
-        // Main Box
-        const cardMesh = new THREE.Mesh(cardGeom, cardMat);
-        cardGroup.add(cardMesh);
-
-        // Photo Face (slightly in front to avoid z-fighting)
-        const photoGeom = new THREE.PlaneGeometry(1.48, 1.98);
-        const photoMesh = new THREE.Mesh(photoGeom, frontMat);
-        photoMesh.position.z = 0.026;
-        cardGroup.add(photoMesh);
-
-        // --- Particles ---
-        const particlesGeom = new THREE.BufferGeometry();
-        const posArray = new Float32Array(CONFIG.particlesCount * 3);
-        const speedArray = new Float32Array(CONFIG.particlesCount);
-
-        for(let i=0; i < CONFIG.particlesCount; i++) {
-            posArray[i*3] = (Math.random() - 0.5) * 10;
-            posArray[i*3+1] = (Math.random() - 0.5) * 10;
-            posArray[i*3+2] = (Math.random() - 0.5) * 5 - 2;
-            speedArray[i] = Math.random() * 0.002 + 0.001;
-        }
-
-        particlesGeom.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMat = new THREE.PointsMaterial({
-            size: 0.015,
-            color: CONFIG.goldColor,
-            transparent: true,
-            opacity: 0.6
-        });
-
-        const particlesMesh = new THREE.Points(particlesGeom, particlesMat);
-        scene.add(particlesMesh);
-
-        // --- Interactivity State ---
-        let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
-        let scrollY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-        });
-
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-        });
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // --- Animation Loop ---
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-            const elapsed = clock.getElapsedTime();
-
-            // Auto Rotation & Bobbing
-            const autoRotY = elapsed * 0.24; // ~0.004 rad/frame at 60fps
-            const bobY = Math.sin(elapsed * 2) * 0.08;
-
-            // Mouse Tilt Lerp
-            targetX = mouseX * 0.3; // max rotateY 0.3
-            targetY = mouseY * 0.2; // max rotateX 0.2
-            
-            cardGroup.rotation.y += (targetX + autoRotY - cardGroup.rotation.y) * 0.04;
-            cardGroup.rotation.x += (targetY - cardGroup.rotation.x) * 0.04;
-            cardGroup.position.y = bobY;
-
-            // Particles Drift
-            const positions = particlesGeom.attributes.position.array;
-            for(let i=0; i < CONFIG.particlesCount; i++) {
-                positions[i*3+1] += speedArray[i];
-                if(positions[i*3+1] > 5) positions[i*3+1] = -5;
-            }
-            particlesGeom.attributes.position.needsUpdate = true;
-
-            // Scroll Parallax (100vh range)
-            const scrollProgress = Math.min(scrollY / window.innerHeight, 1);
-            camera.position.z = 3 + (scrollProgress * 2); // 3 to 5
-            const scale = 1 - (scrollProgress * 0.3);    // 1 to 0.7
-            cardGroup.scale.set(scale, scale, scale);
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-    </script>
+    <!-- Ambient Background Effects -->
+    <div class="ambient-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
 
     <div class="container">
         
         <!-- SIDEBAR -->
         <aside class="sidebar reveal-left">
             <div class="profile-header">
-                <div class="profile-img-wrapper flutter-3d">
+                <div class="profile-img-wrapper">
                     <img src="assets/foto andrea.png" alt="Andrea Carini" class="profile-img">
                 </div>
                 <h1 class="name">Andrea <span>Carini</span></h1>
@@ -419,7 +248,7 @@
                 
                 <div class="projects-grid">
                     <!-- Progetto 1 -->
-                    <div class="project-card glass-card flutter-3d">
+                    <div class="project-card glass-card">
                         <div class="project-img-container">
                             <img src="assets/punotcialde .png" alt="Punto Cialde" class="project-img">
                         </div>
@@ -433,7 +262,7 @@
                     </div>
 
                     <!-- Progetto 2 -->
-                    <div class="project-card glass-card flutter-3d">
+                    <div class="project-card glass-card">
                         <div class="project-img-container">
                             <img src="assets/ghiaccio goruemt.jpg" alt="Il Ghiaccio Gourmet" class="project-img">
                         </div>
@@ -447,7 +276,7 @@
                     </div>
 
                     <!-- Progetto 3 -->
-                    <div class="project-card glass-card flutter-3d">
+                    <div class="project-card glass-card">
                         <div class="project-img-container">
                             <img src="assets/ingorzone.jpg" alt="Ingrozone Ingrosso" class="project-img">
                         </div>
@@ -538,6 +367,6 @@
         </main>
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -14,8 +14,7 @@
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     
     /* Typography */
-    --font-main: 'DM Sans', sans-serif;
-    --font-title: 'Instrument Serif', serif;
+    --font-main: 'Outfit', sans-serif;
     
     /* Layout */
     --sidebar-width: 350px;
@@ -37,57 +36,45 @@ body {
     overflow-x: hidden;
 }
 
-/* --- Three.js Hero Section --- */
-#hero-3d {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #0a0908;
-}
-
-#webgl-canvas {
-    position: absolute;
+/* --- Ambient Background --- */
+.ambient-bg {
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    /* Fixed so it stays in bg while scrolling, giving parallax before CV covers it */
-    position: fixed; 
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
+    overflow: hidden;
 }
 
-.hero-overlay {
+.glow-orb {
     position: absolute;
-    bottom: 10%;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
-    z-index: 10;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: float 20s infinite alternate;
 }
 
-.hero-name {
-    font-family: var(--font-title);
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    letter-spacing: -1px;
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(0, 180, 216, 0.15);
+    top: -100px;
+    left: -100px;
 }
 
-.hero-subtitle {
-    font-family: var(--font-main);
-    font-size: clamp(0.8rem, 2vw, 1.2rem);
-    color: #c8a06e; 
-    font-weight: 300;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-top: 1rem;
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: rgba(30, 64, 175, 0.15); /* Deep Blue */
+    bottom: -200px;
+    right: -100px;
+    animation-delay: -10s;
 }
 
-@media (max-width: 768px) {
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, 50px) scale(1.1); }
 }
 
 /* --- Layout --- */
@@ -96,10 +83,6 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: var(--bg-main); /* Ensure CV has a solid background to cover canvas when scrolling down */
-    position: relative;
-    z-index: 20; /* Float above the fixed canvas */
-    box-shadow: 0 -20px 50px rgba(0,0,0,0.5);
 }
 
 /* --- Sidebar --- */
@@ -159,7 +142,6 @@ body {
 }
 
 .name {
-    font-family: var(--font-title);
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -271,7 +253,6 @@ body {
     border-radius: 10px;
     width: 0; /* Animated via JS */
     transition: width 1.5s cubic-bezier(0.1, 0.5, 0.1, 1);
-    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .sidebar-footer {
@@ -301,8 +282,7 @@ section {
 }
 
 .main-title {
-    font-family: var(--font-title);
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
@@ -333,9 +313,8 @@ section {
 }
 
 .glass-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+    border-color: rgba(0, 180, 216, 0.3);
+    transform: translateY(-2px);
 }
 
 /* Timeline */
@@ -539,15 +518,12 @@ section {
     font-size: 0.9rem;
     transition: var(--transition);
     cursor: default;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
 }
 
 .tag:hover {
-    background: rgba(0, 180, 216, 0.15);
+    background: rgba(0, 180, 216, 0.1);
     border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px var(--accent-glow);
+    transform: translateY(-2px);
 }
 
 .highlight-tag {
@@ -614,22 +590,16 @@ section {
     border-top: 1px solid var(--glass-border);
 }
 
-/* --- Animations (Reveal & 3D) --- */
-.main-content {
-    perspective: 1200px; /* Add perspective for 3D children */
-}
-
+/* --- Animations (Reveal) --- */
 .reveal-up {
     opacity: 0;
-    transform: translateY(80px) rotateX(15deg) scale(0.95);
-    transform-origin: center bottom;
-    transition: all 1s cubic-bezier(0.1, 0.5, 0.1, 1);
-    transform-style: preserve-3d;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.1, 0.5, 0.1, 1);
 }
 
 .reveal-up.active {
     opacity: 1;
-    transform: translateY(0) rotateX(0) scale(1);
+    transform: translateY(0);
 }
 
 .reveal-left {
